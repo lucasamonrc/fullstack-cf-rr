@@ -17,12 +17,11 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export function loader({ context }: Route.LoaderArgs) {
-	return { message: context.cloudflare.env.VALUE_FROM_CLOUDFLARE };
+	return { token: context.cloudflare.env.MAPBOX_TOKEN };
 }
 
 export default function Home({ loaderData }: Route.ComponentProps) {
 	const { messages } = useGuestbook();
-	const [mapboxToken, setMapboxToken] = useState("");
 	const [showTokenInput, setShowTokenInput] = useState(false);
 
 	const messagesWithLocation = messages.filter((msg) => msg.location);
@@ -109,86 +108,9 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 
 							<TabsContent value="map" className="space-y-4">
 								<div className="max-w-6xl mx-auto">
-									{!mapboxToken && (
-										<Card className="p-6 mb-6 bg-accent/10 border-accent">
-											<div className="text-center">
-												<Map className="h-12 w-12 text-accent mx-auto mb-4" />
-												<h3 className="text-lg font-semibold text-foreground mb-2">
-													Map View Requires Setup
-												</h3>
-												<p className="text-muted-foreground mb-4">
-													To view message locations on
-													the map, please enter your
-													Mapbox public token. You can
-													get one free at{" "}
-													<a
-														href="https://mapbox.com"
-														target="_blank"
-														rel="noopener noreferrer"
-														className="text-primary hover:underline"
-													>
-														mapbox.com
-													</a>
-												</p>
-												{!showTokenInput ? (
-													<Button
-														onClick={() =>
-															setShowTokenInput(
-																true
-															)
-														}
-													>
-														Configure Map
-													</Button>
-												) : (
-													<div className="max-w-md mx-auto space-y-3">
-														<input
-															type="text"
-															placeholder="Enter your Mapbox public token"
-															value={mapboxToken}
-															onChange={(e) =>
-																setMapboxToken(
-																	e.target
-																		.value
-																)
-															}
-															className="w-full px-3 py-2 border border-border rounded-md bg-background text-foreground"
-														/>
-														<div className="flex space-x-2">
-															<Button
-																onClick={() =>
-																	setShowTokenInput(
-																		false
-																	)
-																}
-																variant="outline"
-																size="sm"
-															>
-																Cancel
-															</Button>
-															<Button
-																onClick={() =>
-																	setShowTokenInput(
-																		false
-																	)
-																}
-																size="sm"
-																disabled={
-																	!mapboxToken
-																}
-															>
-																Apply
-															</Button>
-														</div>
-													</div>
-												)}
-											</div>
-										</Card>
-									)}
-
 									<GuestMap
 										messages={messages}
-										mapboxToken={mapboxToken}
+										mapboxToken={loaderData.token}
 									/>
 								</div>
 							</TabsContent>
