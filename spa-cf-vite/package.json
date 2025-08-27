@@ -11,7 +11,7 @@
 		"cf-typegen": "wrangler types",
 		"db:migrate:local": "wrangler d1 migrations apply 'prod_d1'",
 		"db:migrate": "wrangler d1 migrations apply 'prod_d1' --remote=true",
-		"deploy": "wrangler deploy"
+		"deploy": "npm run build && wrangler deploy"
 	},
 	"dependencies": {
 		"@tailwindcss/vite": "^4.1.12",
