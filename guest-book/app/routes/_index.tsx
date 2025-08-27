@@ -1,6 +1,5 @@
 import { useGuestbook } from "~/hooks/useGuestbook";
 import type { Route } from "./+types/_index";
-import { useState } from "react";
 import { Navigation } from "~/components/Navigation";
 import { Map, MapPin, MessageSquare, Users } from "lucide-react";
 import { Card } from "~/components/ui/card";
@@ -22,7 +21,6 @@ export function loader({ context }: Route.LoaderArgs) {
 
 export default function Home({ loaderData }: Route.ComponentProps) {
 	const { messages } = useGuestbook();
-	const [showTokenInput, setShowTokenInput] = useState(false);
 
 	const messagesWithLocation = messages.filter((msg) => msg.location);
 
