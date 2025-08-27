@@ -3,25 +3,26 @@
  * https://developers.cloudflare.com/workers/wrangler/configuration/
  */
 {
-  "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "spa-cf-vite",
-  "compatibility_date": "2025-08-23",
-  "main": "./worker/index.ts",
-  "observability": {
-    "enabled": true
-  },
-  "assets": {
-    "directory": "./dist",
-    "not_found_handling": "single-page-application",
-    "run_worker_first": ["/api/*"]
-  },
-  "d1_databases": [
-    {
-      "binding": "prod_d1",
-      "database_name": "prod-d1",
-      "database_id": "da573a2c-b438-4faa-834c-8dcc59a4f515"
-    }
-  ],
-  "compatibility_flags": ["nodejs_compat"],
-  "upload_source_maps": true
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "spa-cf-vite",
+	"compatibility_date": "2025-08-23",
+	"main": "./worker/index.ts",
+	"observability": {
+		"enabled": true
+	},
+	"assets": {
+		"directory": "./dist",
+		"not_found_handling": "single-page-application",
+		"run_worker_first": ["/api/*"]
+	},
+	"d1_databases": [
+		{
+			"binding": "prod_d1",
+			"database_name": "prod-d1",
+			"database_id": "da573a2c-b438-4faa-834c-8dcc59a4f515",
+			"migrations_dir": "./drizzle"
+		}
+	],
+	"compatibility_flags": ["nodejs_compat"],
+	"upload_source_maps": true
 }

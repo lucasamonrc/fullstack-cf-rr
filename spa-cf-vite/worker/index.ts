@@ -1,21 +1,28 @@
+import { drizzle } from "drizzle-orm/d1";
 import { Hono } from "hono";
+import { guestsTable } from "../db/schema";
 
 const app = new Hono<{ Bindings: Env }>();
 
 app.get("/api/guests", async (c) => {
-  const { results } = await c.env.prod_d1.prepare("SELECT * FROM Guests").run();
+	const db = drizzle(c.env.prod_d1);
 
-  return c.json(results);
+	const result = await db.select().from(guestsTable).all();
+
+	return c.json(result);
 });
 
 app.post("/api/guests", async (c) => {
-  const body = (await c.req.json()) as { name: string; message: string };
-  await c.env.prod_d1
-    .prepare("INSERT INTO Guests (Name, Message) VALUES (?, ?)")
-    .bind(body.name, body.message)
-    .run();
+	const db = drizzle(c.env.prod_d1);
 
-  return c.json({ success: true });
+	const body = (await c.req.json()) as { name: string; message: string };
+
+	const result = await db
+		.insert(guestsTable)
+		.values(body)
+		.returning({ id: guestsTable.id });
+
+	return c.json(result);
 });
 
 export default app;
